@@ -1,0 +1,2 @@
+// to connect with Expo app, need to set hostname
+set REACT_NATIVE_PACKAGER_HOSTNAME=localhost
