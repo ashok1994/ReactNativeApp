@@ -17,5 +17,4 @@ export default class LogoComponent extends Component {
 }
 
 
-AppRegistry.registerComponent('LogoComponent', () => LogoComponent)
 

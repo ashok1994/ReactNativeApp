@@ -1,0 +1,16 @@
+[
+    {
+        "title": "ABC",
+        "subtitle": "SUB",
+        "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
+        "image": "https://royalenfield.com/redditch/images/main-carousel-red-bg.jpg",
+        "liked": false
+    },
+    {
+        "title": "ABC",
+        "subtitle": "SUB",
+        "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
+        "image": "https://royalenfield.com/redditch/images/main-carousel-red-bg.jpg",
+        "liked": false
+    }
+]

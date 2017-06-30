@@ -11,25 +11,64 @@ import {
   Text,
   View,
   ScrollView,
-  Image
+  Image,
+  ListView
 } from 'react-native';
 
 import { Card, Button, Header, List, ListItem } from 'react-native-elements';
 
 import LogoComponent from './components/LogoComponent';
 import BannerComponent from './components/BannerComponent';
+import BlogListItemComponent from './components/BlogListItemComponent';
+
+
+var data = require('./json/blogs.json');
+var extraData = require('./json/extra.json');
 
 export default class AwesomeProject extends Component {
 
-  myAlert() {
+  constructor() {
+    super();
+    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+    data.unshift({ first: true })
+    data.push({ last: true })
+    this.state = {
+      dataSource: ds.cloneWithRows(data),
+      isLoading: false
+    }
+
+    this.scrolledDown = this.scrolledDown.bind(this);
+  }
+
+  scrolledDown() {
+    var last = data.pop();
+    var first = data.shift();
+    data = data.concat(extraData);
+    data.unshift(first);
+    data.push(last);
+    this.setState({
+      isLoading: true
+    })
+
+    setTimeout(() => {
+
+      this.setState({
+        dataSource: this.state.dataSource.cloneWithRows(data),
+        isLoading: false
+      })
+    }, 1000)
 
   }
 
   render() {
 
+
+
     let pic = {
       uri: "https://www.w3schools.com/css/trolltunga.jpg"
     }
+
+
 
     return (
       <View style={styles.container}>
@@ -53,34 +92,31 @@ export default class AwesomeProject extends Component {
         </View>
 
         <View style={{ flex: 14 }}>
-
-          <ScrollView
-          >
-            <BannerComponent />
-
-            <Card
-              containerStyle={{ margin: 10 }}
-
-              imageStyle={{ height: 300, resizeMode: 'cover' }}
-              image={{ uri: 'https://royalenfield.com/redditch/images/main-carousel-red-bg.jpg' }} >
-              <Text style={{ fontWeight: 'bold', color: '#000', fontSize: 25 }}>
-                What to watch for in 2017 NBA Free Agency?
-               </Text>
-              <Text style={{ color: 'rgba(0,0,0,0.4)', fontSize: 19 }}>
-                All eyes are on the fate of Lob City and Gordon Hayward, but there are plenty of other names to look out for
-               </Text>
-              <List containerStyle={{ borderTopColor: '#fff', borderBottomColor: '#fff' }} >
-                <ListItem
-                  containerStyle={{ borderTopColor: '#fff', borderBottomColor: '#fff' }}
-                  roundAvatar
-                  avatar={{ uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg' }}
-                  rightIcon={{ name: 'thumb-up', color: 'blue' }} />
-              </List>
-            </Card>
-            <View style={{ height: 100 }}></View>
-
-          </ScrollView>
+          <ListView
+            dataSource={this.state.dataSource}
+            onEndReachedThreshold={1}
+            onEndReached={this.scrolledDown}
+            renderRow={(rowData) => {
+              if (rowData && rowData.first) {
+                return (<BannerComponent />)
+              } else if (rowData && rowData.last) {
+                return (<View style={{ height: 50 }}></View>)
+              }
+              else {
+                return (
+                  <BlogListItemComponent
+                    title={rowData.title}
+                    subtitle={rowData.subtitle}
+                    image={rowData.image}
+                    avatar={rowData.avatar}
+                  />
+                )
+              }
+            }} />
         </View>
+        {
+          this.state.isLoading ? <Image source={require('./images/ringalt.gif')} style={{ width: 40, height: 40, alignSelf: 'center' }} /> : null
+        }
 
       </View>
 
