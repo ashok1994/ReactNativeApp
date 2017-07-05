@@ -21,31 +21,53 @@ import LogoComponent from './components/LogoComponent';
 import BannerComponent from './components/BannerComponent';
 import BlogListItemComponent from './components/BlogListItemComponent';
 
+import BlogDetail from './screens/BlogDetail';
+
+import { StackNavigator } from 'react-navigation'
 
 var data = require('./json/blogs.json');
-var extraData = require('./json/extra.json');
+var newData = [];
 
-export default class AwesomeProject extends Component {
+
+
+export default class BlogList extends Component {
 
   constructor() {
     super();
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
-    data.unshift({ first: true })
-    data.push({ last: true })
+    newData = data.slice(0, 2)
+
+    newData.unshift({ first: true })
+    newData.push({ last: true })
     this.state = {
-      dataSource: ds.cloneWithRows(data),
+      dataSource: ds.cloneWithRows(newData),
       isLoading: false
     }
 
     this.scrolledDown = this.scrolledDown.bind(this);
+    this.navigateToDetail = this.navigateToDetail.bind(this);
   }
 
+
+
+  navigateToDetail(blogid) {
+    console.log(blogid);
+    const { navigate } = this.props.navigation;
+    navigate('BlogDetail')
+  }
+
+
+
   scrolledDown() {
-    var last = data.pop();
-    var first = data.shift();
-    data = data.concat(extraData);
-    data.unshift(first);
-    data.push(last);
+    if (newData.length >= 6) {
+      return;
+    }
+
+    var last = newData.pop();
+    var first = newData.shift();
+    newData = newData.concat(data.slice(-2));
+    newData.unshift(first);
+    newData.push(last);
     this.setState({
       isLoading: true
     })
@@ -53,10 +75,10 @@ export default class AwesomeProject extends Component {
     setTimeout(() => {
 
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(data),
+        dataSource: this.state.dataSource.cloneWithRows(newData),
         isLoading: false
       })
-    }, 1000)
+    }, 2000)
 
   }
 
@@ -97,9 +119,12 @@ export default class AwesomeProject extends Component {
             onEndReachedThreshold={1}
             onEndReached={this.scrolledDown}
             renderRow={(rowData) => {
-              if (rowData && rowData.first) {
+              if (!rowData) {
+                return;
+              }
+              else if (rowData.first) {
                 return (<BannerComponent />)
-              } else if (rowData && rowData.last) {
+              } else if (rowData.last) {
                 return (<View style={{ height: 50 }}></View>)
               }
               else {
@@ -109,6 +134,8 @@ export default class AwesomeProject extends Component {
                     subtitle={rowData.subtitle}
                     image={rowData.image}
                     avatar={rowData.avatar}
+                    onItemSelected={this.navigateToDetail}
+                    blogid={rowData.id}
                   />
                 )
               }
@@ -141,4 +168,20 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('AwesomeProject', () => AwesomeProject);
+const SimpleApp = StackNavigator({
+  Home: {
+    screen: BlogList,
+    navigationOptions: {
+      header: function () {
+        return null
+      }
+    }
+  },
+  BlogDetail: {
+    screen: BlogDetail
+  }
+});
+
+
+
+AppRegistry.registerComponent('AwesomeProject', () => SimpleApp);

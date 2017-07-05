@@ -4,13 +4,31 @@
         "subtitle": "SUB",
         "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
         "image": "https://royalenfield.com/redditch/images/main-carousel-red-bg.jpg",
-        "liked": false
+        "liked": false,
+        "id": 1
     },
     {
         "title": "XYZ",
         "subtitle": "SUB",
         "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
         "image": "https://royalenfield.com/redditch/images/main-carousel-red-bg.jpg",
-        "liked": false
+        "liked": false,
+        "id": 2
+    },
+    {
+        "title": "NEW-A",
+        "subtitle": "SUB",
+        "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
+        "image": "https://royalenfield.com/redditch/images/main-carousel-red-bg.jpg",
+        "liked": false,
+        "id": 3
+    },
+    {
+        "title": "NEW-B",
+        "subtitle": "SUB",
+        "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
+        "image": "https://royalenfield.com/redditch/images/main-carousel-red-bg.jpg",
+        "liked": false,
+        "id": 4
     }
 ]
